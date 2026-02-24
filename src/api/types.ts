@@ -60,3 +60,17 @@ export interface AgingArResponse {
   buckets: { amount0To30: number; amount31To60: number; amount61To90: number; amount90Plus: number; totalOutstanding: number };
   claims: Array<{ claimId: string; patientId: string; outstandingAmount: number; daysOutstanding: number }>;
 }
+
+export interface Insurance {
+  id: string;
+  clinicId: string;
+  payerName: string;
+  payerType: number;
+}
+
+export interface User {
+  id: string;
+  email: string;
+  role: number;
+  clinicId: string;
+}
