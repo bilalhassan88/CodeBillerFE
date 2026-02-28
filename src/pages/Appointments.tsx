@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Plus, X } from 'lucide-react';
 import api from '../api/client';
 import type { PagedResult, Appointment, Patient, User } from '../api/types';
+import { getAppointmentStatusLabel, USER_ROLE } from '../constants/lookups';
 
 export default function Appointments() {
   const [data, setData] = useState<PagedResult<Appointment> | null>(null);
@@ -27,7 +28,7 @@ export default function Appointments() {
   useEffect(() => {
     if (showAdd) {
       api.get<PagedResult<Patient>>('/patients?page=1&pageSize=100').then((res) => setPatients(res.data?.items ?? [])).catch(() => setPatients([]));
-      api.get<PagedResult<User>>('/users?role=2&pageSize=50').then((res) => setClinicians(res.data?.items ?? [])).catch(() => setClinicians([]));
+      api.get<PagedResult<User>>(`/users?role=${USER_ROLE.Clinician}&pageSize=50`).then((res) => setClinicians(res.data?.items ?? [])).catch(() => setClinicians([]));
     }
   }, [showAdd]);
 
@@ -51,12 +52,11 @@ export default function Appointments() {
       load();
     } catch (err: unknown) {
       const msg = err && typeof err === 'object' && 'response' in err && (err as { response?: { data?: { error?: string } } }).response?.data?.error;
-      setSubmitError(msg ?? 'Failed to create appointment.');
+      setSubmitError(typeof msg === 'string' ? msg : 'Failed to create appointment.');
     }
   };
 
   const items = data?.items ?? [];
-  const statusLabel = (s: number) => (s === 0 ? 'Scheduled' : s === 1 ? 'Canceled' : 'Completed');
 
   return (
     <div>
@@ -92,7 +92,7 @@ export default function Appointments() {
                   <tr key={a.id} className="border-b border-slate-100 hover:bg-slate-50/50">
                     <td className="py-3 font-medium text-slate-900">{new Date(a.appointmentDateTime).toLocaleString()}</td>
                     <td className="py-3">
-                      <span className="rounded-full bg-primary-100 px-2 py-0.5 text-xs font-medium text-primary-700">{statusLabel(a.status)}</span>
+                      <span className="rounded-full bg-primary-100 px-2 py-0.5 text-xs font-medium text-primary-700">{getAppointmentStatusLabel(a.status)}</span>
                     </td>
                     <td className="py-3 text-slate-600">{a.notes ?? '—'}</td>
                   </tr>

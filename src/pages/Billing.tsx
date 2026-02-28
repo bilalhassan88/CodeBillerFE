@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Plus, X } from 'lucide-react';
 import api from '../api/client';
 import type { Patient, PagedResult } from '../api/types';
+import CodeLookupInput from '../components/CodeLookupInput';
 
 interface BillingItem {
   id: string;
@@ -59,7 +60,7 @@ export default function Billing() {
       load();
     } catch (err: unknown) {
       const msg = err && typeof err === 'object' && 'response' in err && (err as { response?: { data?: { error?: string } } }).response?.data?.error;
-      setSubmitError(msg ?? 'Failed to create billing record.');
+      setSubmitError(typeof msg === 'string' ? msg : 'Failed to create billing record.');
     }
   };
 
@@ -127,12 +128,26 @@ export default function Billing() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700">CPT code *</label>
-                <input type="text" required className="input-field mt-1" placeholder="e.g. 99214" value={form.cptCode} onChange={(e) => setForm((f) => ({ ...f, cptCode: e.target.value }))} />
+                <label className="block text-sm font-medium text-slate-700">CPT / HCPCS code *</label>
+                <CodeLookupInput
+                  type="hcpcs"
+                  value={form.cptCode}
+                  onChange={(code) => setForm((f) => ({ ...f, cptCode: code }))}
+                  placeholder="Select or search (e.g. 99214, J3301)"
+                  required
+                  dropdownLabel="CPT / HCPCS codes"
+                />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700">ICD code *</label>
-                <input type="text" required className="input-field mt-1" placeholder="e.g. Z00.00" value={form.icdCode} onChange={(e) => setForm((f) => ({ ...f, icdCode: e.target.value }))} />
+                <label className="block text-sm font-medium text-slate-700">ICD-10-CM code *</label>
+                <CodeLookupInput
+                  type="icd10"
+                  value={form.icdCode}
+                  onChange={(code) => setForm((f) => ({ ...f, icdCode: code }))}
+                  placeholder="Select or search by code or diagnosis"
+                  required
+                  dropdownLabel="ICD-10-CM codes"
+                />
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-700">Billed amount ($) *</label>

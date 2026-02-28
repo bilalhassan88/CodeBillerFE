@@ -9,7 +9,7 @@
     @apply antialiased;
   }
   body {
-    @apply bg-surface text-slate-800 min-h-screen font-sans;
+    @apply bg-surface text-slate-800 min-h-screen font-sans dark:bg-dark-surface dark:text-slate-200;
   }
   #root {
     @apply min-h-screen;
@@ -18,15 +18,15 @@
 
 @layer components {
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-primary-600 px-4 py-2.5 text-sm font-medium text-white shadow-soft transition hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-primary-600 px-4 py-2.5 text-sm font-medium text-white shadow-soft transition hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 dark:focus:ring-offset-slate-900;
   }
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:border-slate-600 dark:bg-dark-card dark:text-slate-200 dark:hover:bg-dark-muted dark:focus:ring-offset-slate-900;
   }
   .input-field {
-    @apply block w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-900 placeholder-slate-400 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500;
+    @apply block w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-900 placeholder-slate-400 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-slate-600 dark:bg-dark-card dark:text-slate-100 dark:placeholder-slate-500;
   }
   .card {
-    @apply rounded-2xl border border-slate-200 bg-surface-card p-6 shadow-soft;
+    @apply rounded-2xl border border-slate-200 bg-surface-card p-6 shadow-soft dark:border-slate-700 dark:bg-dark-card;
   }
 }

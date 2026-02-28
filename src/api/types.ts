@@ -18,6 +18,7 @@ export interface PagedResult<T> {
 export interface Patient {
   id: string;
   clinicId: string;
+  mrn?: string;
   firstName: string;
   lastName: string;
   dateOfBirth: string;
@@ -29,6 +30,16 @@ export interface Patient {
   state?: string;
   zipCode?: string;
   createdAtUtc: string;
+}
+
+/** Query params for server-side list endpoints (search, sort, pagination). */
+export interface ListQueryParams {
+  search?: string;
+  sortBy?: string;
+  sortDir?: 'asc' | 'desc';
+  page?: number;
+  pageSize?: number;
+  [key: string]: string | number | undefined;
 }
 
 export interface Appointment {
@@ -73,4 +84,31 @@ export interface User {
   email: string;
   role: number;
   clinicId: string;
+}
+
+/** From GET /api/v1/lookups — coding and UI lookups aligned with backend Domain enums. */
+export interface LookupItem {
+  value: number;
+  label: string;
+}
+
+export interface CodeLookupResult {
+  code: string;
+  description: string;
+}
+
+export interface PagedCodeLookupResponse {
+  items: CodeLookupResult[];
+  totalCount: number;
+}
+
+export interface LookupsResponse {
+  userRoles: LookupItem[];
+  claimStatuses: LookupItem[];
+  appointmentStatuses: LookupItem[];
+  payerTypes: LookupItem[];
+  billingRecordStatuses: LookupItem[];
+  notificationTypes: LookupItem[];
+  notificationDeliveryStatuses: LookupItem[];
+  paymentSources: LookupItem[];
 }

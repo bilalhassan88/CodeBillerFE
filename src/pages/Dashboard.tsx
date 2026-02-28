@@ -41,7 +41,7 @@ export default function Dashboard() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="h-10 w-10 animate-spin rounded-full border-2 border-primary-600 border-t-transparent" />
+        <div className="h-10 w-10 animate-spin rounded-full border-2 border-primary-600 border-t-transparent dark:border-primary-400" />
       </div>
     );
   }
@@ -55,8 +55,8 @@ export default function Dashboard() {
 
   return (
     <div>
-      <h1 className="font-display text-2xl font-bold text-slate-900">Dashboard</h1>
-      <p className="mt-1 text-slate-600">Overview of your practice</p>
+      <h1 className="font-display text-2xl font-bold text-slate-900 dark:text-slate-100">Dashboard</h1>
+      <p className="mt-1 text-slate-600 dark:text-slate-400">Overview of your practice</p>
       <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {cards.map(({ label, value, icon: Icon, color }) => (
           <div key={label} className="card flex items-center gap-4">
@@ -64,8 +64,8 @@ export default function Dashboard() {
               <Icon className="h-6 w-6" />
             </div>
             <div>
-              <p className="text-sm font-medium text-slate-500">{label}</p>
-              <p className="text-xl font-semibold text-slate-900">{value}</p>
+              <p className="text-sm font-medium text-slate-500 dark:text-slate-400">{label}</p>
+              <p className="text-xl font-semibold text-slate-900 dark:text-slate-100">{value}</p>
             </div>
           </div>
         ))}

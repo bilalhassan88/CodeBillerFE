@@ -36,19 +36,19 @@ export default function Login() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 via-primary-50/30 to-slate-100 px-4">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 via-primary-50/30 to-slate-100 px-4 dark:from-slate-900 dark:via-slate-900 dark:to-dark-surface">
       <div className="w-full max-w-md">
         <div className="card text-center">
           <div className="mb-8 flex justify-center">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-600 text-white shadow-glow">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-600 text-white shadow-glow dark:bg-primary-500">
               <FileText className="h-8 w-8" />
             </div>
           </div>
-          <h1 className="font-display text-2xl font-bold text-slate-900">Code Biller</h1>
-          <p className="mt-1 text-sm text-slate-500">Healthcare Practice Management</p>
+          <h1 className="font-display text-2xl font-bold text-slate-900 dark:text-slate-100">Code Biller</h1>
+          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Healthcare Practice Management</p>
           <form onSubmit={handleSubmit} className="mt-8 space-y-4">
             {error && (
-              <div className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>
+              <div className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700 dark:bg-red-900/30 dark:text-red-300">{error}</div>
             )}
             <input
               type="email"
@@ -72,7 +72,7 @@ export default function Login() {
               {loading ? 'Signing in…' : 'Sign in'}
             </button>
           </form>
-          <p className="mt-6 text-xs text-slate-400">
+          <p className="mt-6 text-xs text-slate-400 dark:text-slate-500">
             Default: admin@example.com / Admin123!
           </p>
         </div>
