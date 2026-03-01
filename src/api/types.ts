@@ -111,4 +111,40 @@ export interface LookupsResponse {
   notificationTypes: LookupItem[];
   notificationDeliveryStatuses: LookupItem[];
   paymentSources: LookupItem[];
+  writeOffRuleTypes?: LookupItem[];
+  resubmissionReasonCodes?: string[];
+  signupPlans: SignupPlanOption[];
+  signupAddOns: SignupAddOnOption[];
+}
+
+export interface SignupPlanOption {
+  value: string;
+  label: string;
+  description: string;
+}
+
+export interface SignupAddOnOption {
+  value: string;
+  label: string;
+}
+
+export interface SignupRequest {
+  clinicName: string;
+  timezone?: string;
+  adminEmail: string;
+  password: string;
+  role: number;
+  plan: string;
+  addOnModules?: string[];
+  mockPaymentConfirmed: boolean;
+}
+
+export interface SignupResponse {
+  accessToken: string;
+  refreshToken: string;
+  expiresAt: string;
+  userId: string;
+  email: string;
+  role: number;
+  clinicId: string;
 }

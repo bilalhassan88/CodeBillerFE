@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react';
 import api from '../api/client';
-import type { LoginResponse } from '../api/types';
+import type { LoginResponse, SignupRequest, SignupResponse } from '../api/types';
 
 interface AuthState {
   accessToken: string | null;
@@ -14,6 +14,7 @@ interface AuthState {
 
 interface AuthContextValue extends AuthState {
   login: (email: string, password: string) => Promise<void>;
+  signup: (payload: SignupRequest) => Promise<void>;
   logout: () => void;
   setTokens: (data: LoginResponse) => void;
 }
@@ -62,6 +63,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setTokens(data);
   }, [setTokens]);
 
+  const signup = useCallback(async (payload: SignupRequest) => {
+    const { data } = await api.post<SignupResponse>('/auth/signup', payload);
+    setTokens(data);
+  }, [setTokens]);
+
   const logout = useCallback(() => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
@@ -86,7 +92,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [state.accessToken]);
 
   return (
-    <AuthContext.Provider value={{ ...state, login, logout, setTokens }}>
+    <AuthContext.Provider value={{ ...state, login, signup, logout, setTokens }}>
       {children}
     </AuthContext.Provider>
   );

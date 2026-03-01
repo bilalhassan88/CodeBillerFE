@@ -3,16 +3,22 @@
  * Use these instead of hardcoded numbers/strings. For dynamic values, consider fetching from GET /api/v1/lookups.
  */
 
-/** UserRole: 0=Admin, 1=Staff, 2=Clinician */
+/** UserRole — align with backend Domain.Common.UserRole (0=Admin, 1=Biller, 2=Provider, 3=Auditor, 4=Staff, 5=Clinician). */
 export const USER_ROLE = {
   Admin: 0,
-  Staff: 1,
-  Clinician: 2,
+  Biller: 1,
+  Provider: 2,
+  Auditor: 3,
+  Staff: 4,
+  Clinician: 5,
 } as const;
 export type UserRoleValue = (typeof USER_ROLE)[keyof typeof USER_ROLE];
 
 export const USER_ROLE_LABELS: Record<number, string> = {
   [USER_ROLE.Admin]: 'Admin',
+  [USER_ROLE.Biller]: 'Biller',
+  [USER_ROLE.Provider]: 'Provider',
+  [USER_ROLE.Auditor]: 'Auditor',
   [USER_ROLE.Staff]: 'Staff',
   [USER_ROLE.Clinician]: 'Clinician',
 };

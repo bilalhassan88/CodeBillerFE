@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { FileText } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -72,8 +72,11 @@ export default function Login() {
               {loading ? 'Signing in…' : 'Sign in'}
             </button>
           </form>
-          <p className="mt-6 text-xs text-slate-400 dark:text-slate-500">
-            Default: admin@example.com / Admin123!
+          <p className="mt-6 text-center text-sm text-slate-500 dark:text-slate-400">
+            Default: admin@example.com / Admin123! —{' '}
+            <Link to="/signup" className="font-medium text-primary-600 hover:underline dark:text-primary-400">
+              Create account
+            </Link>
           </p>
         </div>
       </div>
