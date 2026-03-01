@@ -3,6 +3,7 @@ import { Plus, X } from 'lucide-react';
 import api from '../api/client';
 import type { PagedResult, Appointment, Patient, User } from '../api/types';
 import { getAppointmentStatusLabel, USER_ROLE } from '../constants/lookups';
+import { getApiErrorMessage } from '../utils/apiErrors';
 
 export default function Appointments() {
   const [data, setData] = useState<PagedResult<Appointment> | null>(null);
@@ -51,8 +52,7 @@ export default function Appointments() {
       setForm({ patientId: '', clinicianId: '', appointmentDateTime: '', notes: '' });
       load();
     } catch (err: unknown) {
-      const msg = err && typeof err === 'object' && 'response' in err && (err as { response?: { data?: { error?: string } } }).response?.data?.error;
-      setSubmitError(typeof msg === 'string' ? msg : 'Failed to create appointment.');
+      setSubmitError(getApiErrorMessage(err, 'Failed to create appointment.'));
     }
   };
 
@@ -62,8 +62,8 @@ export default function Appointments() {
     <div>
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display text-2xl font-bold text-slate-900">Appointments</h1>
-          <p className="mt-1 text-slate-600">Schedule and manage visits</p>
+          <h1 className="font-display text-2xl font-bold text-slate-900 dark:text-slate-100">Appointments</h1>
+          <p className="mt-1 text-slate-600 dark:text-slate-300">Schedule and manage visits</p>
         </div>
         <button type="button" className="btn-primary flex items-center gap-2" onClick={() => setShowAdd(true)}>
           <Plus className="h-4 w-4" />
@@ -73,15 +73,15 @@ export default function Appointments() {
       <div className="card mt-8">
         {loading ? (
           <div className="flex justify-center py-12">
-            <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary-600 border-t-transparent" />
+            <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary-600 border-t-transparent dark:border-primary-400" />
           </div>
         ) : items.length === 0 ? (
-          <p className="py-12 text-center text-slate-500">No appointments.</p>
+          <p className="py-12 text-center text-slate-500 dark:text-slate-400">No appointments.</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead>
-                <tr className="border-b border-slate-200 text-slate-500">
+                <tr className="border-b border-slate-200 text-slate-500 dark:border-slate-600 dark:text-slate-400">
                   <th className="pb-3 font-medium">Date & time</th>
                   <th className="pb-3 font-medium">Status</th>
                   <th className="pb-3 font-medium">Notes</th>
@@ -89,12 +89,12 @@ export default function Appointments() {
               </thead>
               <tbody>
                 {items.map((a) => (
-                  <tr key={a.id} className="border-b border-slate-100 hover:bg-slate-50/50">
-                    <td className="py-3 font-medium text-slate-900">{new Date(a.appointmentDateTime).toLocaleString()}</td>
+                  <tr key={a.id} className="border-b border-slate-100 hover:bg-slate-50/50 dark:border-slate-600 dark:hover:bg-slate-700/30">
+                    <td className="py-3 font-medium text-slate-900 dark:text-slate-100">{new Date(a.appointmentDateTime).toLocaleString()}</td>
                     <td className="py-3">
-                      <span className="rounded-full bg-primary-100 px-2 py-0.5 text-xs font-medium text-primary-700">{getAppointmentStatusLabel(a.status)}</span>
+                      <span className="rounded-full bg-primary-100 px-2 py-0.5 text-xs font-medium text-primary-700 dark:bg-primary-900/40 dark:text-primary-300">{getAppointmentStatusLabel(a.status)}</span>
                     </td>
-                    <td className="py-3 text-slate-600">{a.notes ?? '—'}</td>
+                    <td className="py-3 text-slate-600 dark:text-slate-300">{a.notes ?? '—'}</td>
                   </tr>
                 ))}
               </tbody>
@@ -105,15 +105,15 @@ export default function Appointments() {
 
       {showAdd && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
-            <div className="flex items-center justify-between border-b border-slate-200 pb-4">
-              <h2 className="text-lg font-semibold text-slate-900">New appointment</h2>
-              <button type="button" className="rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600" onClick={() => { setShowAdd(false); setSubmitError(null); }}><X className="h-5 w-5" /></button>
+          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl dark:bg-dark-card dark:border dark:border-slate-600">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-4 dark:border-slate-600">
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">New appointment</h2>
+              <button type="button" className="rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-dark-muted dark:hover:text-slate-200" onClick={() => { setShowAdd(false); setSubmitError(null); }}><X className="h-5 w-5" /></button>
             </div>
             <form onSubmit={handleAdd} className="mt-4 space-y-3">
-              {submitError && <p className="text-sm text-red-600">{submitError}</p>}
+              {submitError && <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-900/30 dark:text-red-300">{submitError}</p>}
               <div>
-                <label className="block text-sm font-medium text-slate-700">Patient *</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">Patient *</label>
                 <select required className="input-field mt-1" value={form.patientId} onChange={(e) => setForm((f) => ({ ...f, patientId: e.target.value }))}>
                   <option value="">Select patient</option>
                   {patients.map((p) => (
@@ -122,7 +122,7 @@ export default function Appointments() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700">Clinician *</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">Clinician *</label>
                 <select required className="input-field mt-1" value={form.clinicianId} onChange={(e) => setForm((f) => ({ ...f, clinicianId: e.target.value }))}>
                   <option value="">Select clinician</option>
                   {clinicians.map((u) => (
@@ -131,11 +131,11 @@ export default function Appointments() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700">Date & time *</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">Date & time *</label>
                 <input type="datetime-local" required className="input-field mt-1" value={form.appointmentDateTime} onChange={(e) => setForm((f) => ({ ...f, appointmentDateTime: e.target.value }))} />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700">Notes</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">Notes</label>
                 <textarea className="input-field mt-1" rows={2} value={form.notes} onChange={(e) => setForm((f) => ({ ...f, notes: e.target.value }))} />
               </div>
               <div className="flex gap-2 pt-4">

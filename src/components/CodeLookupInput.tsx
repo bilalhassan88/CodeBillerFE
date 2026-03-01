@@ -183,13 +183,13 @@ export default function CodeLookupInput({
         </div>
       </div>
       {showDropdown && (
-        <div className="absolute z-50 mt-1 w-full overflow-hidden rounded-lg border border-slate-200 bg-white shadow-lg">
+        <div className="absolute z-50 mt-1 w-full overflow-hidden rounded-lg border border-slate-200 bg-white shadow-lg dark:border-slate-600 dark:bg-dark-card">
           {loading && results.length === 0 ? (
             <div className="flex items-center justify-center py-8">
               <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary-500 border-t-transparent" />
             </div>
           ) : fetchError ? (
-            <div className="px-3 py-4 text-center text-sm text-amber-700">
+            <div className="px-3 py-4 text-center text-sm text-amber-700 dark:text-amber-300">
               {fetchError}
             </div>
           ) : results.length > 0 ? (
@@ -204,7 +204,7 @@ export default function CodeLookupInput({
                     role="option"
                     aria-selected={i === activeIndex}
                     className={`cursor-pointer px-3 py-2 text-sm ${
-                      i === activeIndex ? 'bg-primary-50 text-primary-800' : 'text-slate-700 hover:bg-slate-50'
+                      i === activeIndex ? 'bg-primary-50 text-primary-800 dark:bg-primary-900/40 dark:text-primary-200' : 'text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-600/50'
                     }`}
                     onMouseEnter={() => setActiveIndex(i)}
                     onMouseDown={(e) => {
@@ -212,21 +212,21 @@ export default function CodeLookupInput({
                       handleSelect({ code, description: desc });
                     }}
                   >
-                    <span className="font-medium text-slate-900">{code}</span>
-                    <span className="ml-2 text-slate-600">{desc}</span>
+                    <span className="font-medium text-slate-900 dark:text-slate-100">{code}</span>
+                    <span className="ml-2 text-slate-600 dark:text-slate-300">{desc}</span>
                   </li>
                   );
                 })}
               </ul>
               {hasPaging && (
-                <div className="flex items-center justify-between border-t border-slate-200 bg-slate-50 px-3 py-2 text-xs">
-                  <span className="text-slate-600">
+                <div className="flex items-center justify-between border-t border-slate-200 bg-slate-50 px-3 py-2 text-xs dark:border-slate-600 dark:bg-slate-700/50 dark:text-slate-300">
+                  <span>
                     Page {page} of {totalPages} ({totalCount} total)
                   </span>
                   <div className="flex gap-1">
                     <button
                       type="button"
-                      className="rounded px-2 py-1 text-slate-600 hover:bg-slate-200 disabled:opacity-50"
+                      className="rounded px-2 py-1 text-slate-600 hover:bg-slate-200 disabled:opacity-50 dark:text-slate-300 dark:hover:bg-slate-600"
                       disabled={page <= 1 || loading}
                       onMouseDown={(e) => {
                         e.preventDefault();
@@ -237,7 +237,7 @@ export default function CodeLookupInput({
                     </button>
                     <button
                       type="button"
-                      className="rounded px-2 py-1 text-slate-600 hover:bg-slate-200 disabled:opacity-50"
+                      className="rounded px-2 py-1 text-slate-600 hover:bg-slate-200 disabled:opacity-50 dark:text-slate-300 dark:hover:bg-slate-600"
                       disabled={page >= totalPages || loading}
                       onMouseDown={(e) => {
                         e.preventDefault();
@@ -251,7 +251,7 @@ export default function CodeLookupInput({
               )}
             </>
           ) : (
-            <div className="px-3 py-4 text-center text-sm text-slate-500">
+            <div className="px-3 py-4 text-center text-sm text-slate-500 dark:text-slate-400">
               {query.trim() ? `No results for "${query.trim()}". Try different words.` : `Type to search ${hintLabel}`}
             </div>
           )}

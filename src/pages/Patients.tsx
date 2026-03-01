@@ -3,6 +3,7 @@ import { Plus, Search, X } from 'lucide-react';
 import api from '../api/client';
 import type { Patient } from '../api/types';
 import { useAuth } from '../context/AuthContext';
+import { getApiErrorMessage } from '../utils/apiErrors';
 import { useListQuery } from '../hooks/useListQuery';
 
 const SORT_OPTIONS = [
@@ -75,8 +76,7 @@ export default function Patients() {
       setForm({ mrn: '', firstName: '', lastName: '', dateOfBirth: '', phone: '', email: '', addressLine1: '', city: '', state: '', zipCode: '' });
       refetch();
     } catch (err: unknown) {
-      const msg = err && typeof err === 'object' && 'response' in err && (err as { response?: { data?: { error?: string } } }).response?.data?.error;
-      setSubmitError(typeof msg === 'string' ? msg : 'Failed to add patient.');
+      setSubmitError(getApiErrorMessage(err, 'Failed to add patient.'));
     }
   };
 
@@ -87,8 +87,8 @@ export default function Patients() {
     <div>
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display text-2xl font-bold text-slate-900">Patients</h1>
-          <p className="mt-1 text-slate-600">Manage patient demographics (HIPAA-compliant)</p>
+          <h1 className="font-display text-2xl font-bold text-slate-900 dark:text-slate-100">Patients</h1>
+          <p className="mt-1 text-slate-600 dark:text-slate-300">Manage patient demographics (HIPAA-compliant)</p>
         </div>
         <button type="button" className="btn-primary flex items-center gap-2" onClick={() => setShowAdd(true)}>
           <Plus className="h-4 w-4" />
@@ -108,7 +108,7 @@ export default function Patients() {
             />
           </div>
           <div className="flex items-center gap-2">
-            <label className="text-sm text-slate-600">Sort</label>
+            <label className="text-sm text-slate-600 dark:text-slate-400">Sort</label>
             <select
               className="input-field w-auto"
               value={sortBy}
@@ -127,7 +127,7 @@ export default function Patients() {
             </button>
           </div>
           <div className="flex items-center gap-2">
-            <label className="text-sm text-slate-600">Per page</label>
+            <label className="text-sm text-slate-600 dark:text-slate-400">Per page</label>
             <select
               className="input-field w-20"
               value={pageSize}
@@ -149,7 +149,7 @@ export default function Patients() {
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
                 <thead>
-                  <tr className="border-b border-slate-200 text-slate-500">
+                  <tr className="border-b border-slate-200 text-slate-500 dark:border-slate-600 dark:text-slate-400">
                     <th className="pb-3 font-medium">MRN</th>
                     <th className="pb-3 font-medium">Name</th>
                     <th className="pb-3 font-medium">DOB</th>
@@ -159,26 +159,26 @@ export default function Patients() {
                 </thead>
                 <tbody>
                   {items.map((p) => (
-                    <tr key={p.id} className="border-b border-slate-100 hover:bg-slate-50/50">
-                      <td className="py-3 text-slate-600">{p.mrn ?? '—'}</td>
-                      <td className="py-3 font-medium text-slate-900">{p.firstName} {p.lastName}</td>
-                      <td className="py-3 text-slate-600">{new Date(p.dateOfBirth).toLocaleDateString()}</td>
-                      <td className="py-3 text-slate-600">{p.phone ?? '—'}</td>
-                      <td className="py-3 text-slate-600">{p.email ?? '—'}</td>
+                    <tr key={p.id} className="border-b border-slate-100 hover:bg-slate-50/50 dark:border-slate-600 dark:hover:bg-slate-700/30">
+                      <td className="py-3 text-slate-600 dark:text-slate-300">{p.mrn ?? '—'}</td>
+                      <td className="py-3 font-medium text-slate-900 dark:text-slate-100">{p.firstName} {p.lastName}</td>
+                      <td className="py-3 text-slate-600 dark:text-slate-300">{new Date(p.dateOfBirth).toLocaleDateString()}</td>
+                      <td className="py-3 text-slate-600 dark:text-slate-300">{p.phone ?? '—'}</td>
+                      <td className="py-3 text-slate-600 dark:text-slate-300">{p.email ?? '—'}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
             {items.length === 0 && (
-              <p className="py-12 text-center text-slate-500">No patients found.</p>
+              <p className="py-12 text-center text-slate-500 dark:text-slate-400">No patients found.</p>
             )}
             {totalCount > 0 && (
               <div className="mt-4 flex items-center justify-between border-t border-slate-200 pt-4">
-                <p className="text-sm text-slate-500">{totalCount} total</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400">{totalCount} total</p>
                 <div className="flex gap-2">
                   <button type="button" className="btn-secondary" disabled={page <= 1} onClick={() => setPage(Math.max(1, page - 1))}>Previous</button>
-                  <span className="self-center text-sm text-slate-600">Page {page} of {totalPages}</span>
+                  <span className="self-center text-sm text-slate-600 dark:text-slate-300">Page {page} of {totalPages}</span>
                   <button type="button" className="btn-secondary" disabled={page >= totalPages} onClick={() => setPage(Math.min(totalPages, page + 1))}>Next</button>
                 </div>
               </div>
@@ -189,52 +189,52 @@ export default function Patients() {
 
       {showAdd && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
-            <div className="flex items-center justify-between border-b border-slate-200 pb-4">
-              <h2 className="text-lg font-semibold text-slate-900">Add patient</h2>
-              <button type="button" className="rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600" onClick={() => { setShowAdd(false); setSubmitError(null); }}><X className="h-5 w-5" /></button>
+          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl dark:bg-dark-card dark:border dark:border-slate-600">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-4 dark:border-slate-600">
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Add patient</h2>
+              <button type="button" className="rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-dark-muted dark:hover:text-slate-200" onClick={() => { setShowAdd(false); setSubmitError(null); }}><X className="h-5 w-5" /></button>
             </div>
             <form onSubmit={handleAdd} className="mt-4 space-y-3">
-              {submitError && <p className="text-sm text-red-600">{submitError}</p>}
+              {submitError && <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-900/30 dark:text-red-300">{submitError}</p>}
               <div>
-                <label className="block text-sm font-medium text-slate-700">MRN (optional)</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">MRN (optional)</label>
                 <input type="text" className="input-field mt-1" placeholder="Medical record number" value={form.mrn} onChange={(e) => setForm((f) => ({ ...f, mrn: e.target.value }))} />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700">First name *</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">First name *</label>
                 <input type="text" required className="input-field mt-1" value={form.firstName} onChange={(e) => setForm((f) => ({ ...f, firstName: e.target.value }))} />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700">Last name *</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">Last name *</label>
                 <input type="text" required className="input-field mt-1" value={form.lastName} onChange={(e) => setForm((f) => ({ ...f, lastName: e.target.value }))} />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700">Date of birth *</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">Date of birth *</label>
                 <input type="date" required className="input-field mt-1" value={form.dateOfBirth} onChange={(e) => setForm((f) => ({ ...f, dateOfBirth: e.target.value }))} />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700">Phone</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">Phone</label>
                 <input type="tel" className="input-field mt-1" value={form.phone} onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))} />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700">Email</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">Email</label>
                 <input type="email" className="input-field mt-1" value={form.email} onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))} />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700">Address</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">Address</label>
                 <input type="text" className="input-field mt-1" placeholder="Street" value={form.addressLine1} onChange={(e) => setForm((f) => ({ ...f, addressLine1: e.target.value }))} />
               </div>
               <div className="grid grid-cols-3 gap-2">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700">City</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">City</label>
                   <input type="text" className="input-field mt-1" value={form.city} onChange={(e) => setForm((f) => ({ ...f, city: e.target.value }))} />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700">State</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">State</label>
                   <input type="text" className="input-field mt-1" value={form.state} onChange={(e) => setForm((f) => ({ ...f, state: e.target.value }))} />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700">ZIP</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">ZIP</label>
                   <input type="text" className="input-field mt-1" value={form.zipCode} onChange={(e) => setForm((f) => ({ ...f, zipCode: e.target.value }))} />
                 </div>
               </div>
