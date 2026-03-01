@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { FileText } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { Messages } from '../constants/messages';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -28,8 +29,8 @@ export default function Login() {
     } catch (err: unknown) {
       const msg = err && typeof err === 'object' && 'response' in err
         ? (err as { response?: { data?: { error?: string } } }).response?.data?.error
-        : 'Login failed. Check your email and password.';
-      setError(msg ?? 'Login failed.');
+        : Messages.authLoginFailed;
+      setError(msg ?? Messages.authLoginFailed);
     } finally {
       setLoading(false);
     }
@@ -44,8 +45,8 @@ export default function Login() {
               <FileText className="h-8 w-8" />
             </div>
           </div>
-          <h1 className="font-display text-2xl font-bold text-slate-900 dark:text-slate-100">Code Biller</h1>
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Healthcare Practice Management</p>
+          <h1 className="font-display text-2xl font-bold text-slate-900 dark:text-slate-100">{Messages.appName}</h1>
+          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{Messages.appTagline}</p>
           <form onSubmit={handleSubmit} className="mt-8 space-y-4">
             {error && (
               <div className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700 dark:bg-red-900/30 dark:text-red-300">{error}</div>
@@ -69,13 +70,13 @@ export default function Login() {
               autoComplete="current-password"
             />
             <button type="submit" className="btn-primary w-full" disabled={loading}>
-              {loading ? 'Signing in…' : 'Sign in'}
+              {loading ? Messages.actionSigningIn : Messages.actionSignIn}
             </button>
           </form>
           <p className="mt-6 text-center text-sm text-slate-500 dark:text-slate-400">
-            Default: admin@example.com / Admin123! —{' '}
+            {Messages.authDefaultHint} —{' '}
             <Link to="/signup" className="font-medium text-primary-600 hover:underline dark:text-primary-400">
-              Create account
+              {Messages.actionCreateAccount}
             </Link>
           </p>
         </div>

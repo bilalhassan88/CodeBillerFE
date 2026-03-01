@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import api from '../api/client';
 import type { PagedResult } from '../api/types';
+import { getApiErrorMessage } from '../utils/apiErrors';
+import { Messages } from '../constants/messages';
 
 const DEFAULT_PAGE_SIZE = 20;
 const SEARCH_DEBOUNCE_MS = 300;
@@ -102,7 +104,7 @@ export function useListQuery<T>(options: UseListQueryOptions): UseListQueryResul
     const url = endpoint.startsWith('/') ? endpoint : endpoint;
     api.get<PagedResult<T>>(`${url}${query}`)
       .then((res) => setData(res.data))
-      .catch((err) => setError(err?.response?.data?.error ?? err?.message ?? 'Failed to load'))
+      .catch((err) => setError(getApiErrorMessage(err, Messages.errorLoad)))
       .finally(() => setLoading(false));
   }, [endpoint, page, pageSize, searchDebounced, sortBy, sortDir, extraParams, filters]);
 

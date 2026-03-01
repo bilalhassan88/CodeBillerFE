@@ -10,6 +10,7 @@ import type {
   SignupAddOnOption,
   LookupItem,
 } from '../api/types';
+import { Messages } from '../constants/messages';
 
 const DEFAULT_TIMEZONE = 'America/New_York';
 
@@ -40,7 +41,7 @@ export default function Signup() {
         if (res.data.userRoles?.length) setRole((res.data.userRoles[0] as LookupItem).value);
         if (res.data.signupPlans?.length) setPlan(res.data.signupPlans[0].value);
       })
-      .catch(() => setError('Failed to load signup options.'))
+      .catch(() => setError(Messages.authSignupOptionsFailed))
       .finally(() => setLoadingLookups(false));
   }, []);
 
@@ -77,7 +78,7 @@ export default function Signup() {
       const msg = res?.data?.error ?? (Array.isArray((res?.data as { errors?: unknown[] })?.errors)
         ? (res?.data as { errors?: { ErrorMessage?: string }[] }).errors?.[0]?.ErrorMessage
         : 'Signup failed.');
-      setError(msg ?? 'Signup failed. Try again.');
+      setError(msg ?? Messages.authSignupFailed);
     } finally {
       setSubmitting(false);
     }

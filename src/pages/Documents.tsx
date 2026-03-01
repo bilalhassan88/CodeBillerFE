@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Upload } from 'lucide-react';
 import api from '../api/client';
+import PageHeader from '../components/Layout/PageHeader';
+import { Messages } from '../constants/messages';
 
 interface Doc {
   id: string;
@@ -22,23 +24,23 @@ export default function Documents() {
 
   return (
     <div>
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="font-display text-2xl font-bold text-slate-900">Documents</h1>
-          <p className="mt-1 text-slate-600">Uploaded files and records</p>
-        </div>
-        <button type="button" className="btn-primary flex items-center gap-2">
-          <Upload className="h-4 w-4" />
-          Upload
-        </button>
-      </div>
+      <PageHeader
+        title={Messages.pageDocuments}
+        description={Messages.pageDocumentsDesc}
+        action={
+          <button type="button" className="btn-primary flex items-center gap-2">
+            <Upload className="h-4 w-4" />
+            Upload
+          </button>
+        }
+      />
       <div className="card mt-8">
         {loading ? (
           <div className="flex justify-center py-12">
-            <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary-600 border-t-transparent" />
+            <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary-600 border-t-transparent dark:border-primary-400" />
           </div>
         ) : items.length === 0 ? (
-          <p className="py-12 text-center text-slate-500">No documents.</p>
+          <p className="py-12 text-center text-slate-500 dark:text-slate-400">{Messages.emptyDocuments}</p>
         ) : (
           <ul className="divide-y divide-slate-100">
             {items.map((d) => (

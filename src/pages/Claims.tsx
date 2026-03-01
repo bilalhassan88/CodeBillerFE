@@ -4,6 +4,8 @@ import api from '../api/client';
 import type { PagedResult, Claim, Patient, Insurance } from '../api/types';
 import { getClaimStatusLabel } from '../constants/lookups';
 import { getApiErrorMessage } from '../utils/apiErrors';
+import PageHeader from '../components/Layout/PageHeader';
+import { Messages } from '../constants/messages';
 
 export default function Claims() {
   const [data, setData] = useState<PagedResult<Claim> | null>(null);
@@ -36,7 +38,7 @@ export default function Claims() {
     setSubmitError(null);
     const amount = parseFloat(form.totalBilled);
     if (!form.patientId || !form.insuranceId || isNaN(amount) || amount < 0) {
-      setSubmitError('Please select patient, insurance, and enter a valid amount.');
+      setSubmitError(Messages.validationPatientInsuranceAmount);
       return;
     }
     try {
@@ -49,7 +51,7 @@ export default function Claims() {
       setForm({ patientId: '', insuranceId: '', totalBilled: '' });
       load();
     } catch (err: unknown) {
-      setSubmitError(getApiErrorMessage(err, 'Failed to create claim.'));
+      setSubmitError(getApiErrorMessage(err, Messages.errorSave));
     }
   };
 
@@ -57,23 +59,23 @@ export default function Claims() {
 
   return (
     <div>
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="font-display text-2xl font-bold text-slate-900 dark:text-slate-100">Claims</h1>
-          <p className="mt-1 text-slate-600 dark:text-slate-300">Insurance claims and status</p>
-        </div>
-        <button type="button" className="btn-primary flex items-center gap-2" onClick={() => setShowAdd(true)}>
-          <Plus className="h-4 w-4" />
-          New claim
-        </button>
-      </div>
+      <PageHeader
+        title={Messages.pageClaims}
+        description={Messages.pageClaimsDesc}
+        action={
+          <button type="button" className="btn-primary flex items-center gap-2" onClick={() => setShowAdd(true)}>
+            <Plus className="h-4 w-4" />
+            {Messages.actionNewClaim}
+          </button>
+        }
+      />
       <div className="card mt-8">
         {loading ? (
           <div className="flex justify-center py-12">
             <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary-600 border-t-transparent dark:border-primary-400" />
           </div>
         ) : items.length === 0 ? (
-          <p className="py-12 text-center text-slate-500 dark:text-slate-400">No claims.</p>
+          <p className="py-12 text-center text-slate-500 dark:text-slate-400">{Messages.emptyClaims}</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
@@ -106,7 +108,7 @@ export default function Claims() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl dark:bg-dark-card dark:border dark:border-slate-600">
             <div className="flex items-center justify-between border-b border-slate-200 pb-4 dark:border-slate-600">
-              <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">New claim</h2>
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">{Messages.actionNewClaim}</h2>
               <button type="button" className="rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-dark-muted dark:hover:text-slate-200" onClick={() => { setShowAdd(false); setSubmitError(null); }}><X className="h-5 w-5" /></button>
             </div>
             <form onSubmit={handleAdd} className="mt-4 space-y-3">
@@ -134,8 +136,8 @@ export default function Claims() {
                 <input type="number" step="0.01" min="0" required className="input-field mt-1" value={form.totalBilled} onChange={(e) => setForm((f) => ({ ...f, totalBilled: e.target.value }))} />
               </div>
               <div className="flex gap-2 pt-4">
-                <button type="submit" className="btn-primary flex-1">Save</button>
-                <button type="button" className="btn-secondary" onClick={() => { setShowAdd(false); setSubmitError(null); }}>Cancel</button>
+                <button type="submit" className="btn-primary flex-1">{Messages.actionSave}</button>
+                <button type="button" className="btn-secondary" onClick={() => { setShowAdd(false); setSubmitError(null); }}>{Messages.actionCancel}</button>
               </div>
             </form>
           </div>

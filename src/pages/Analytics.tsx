@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import api from '../api/client';
+import PageHeader from '../components/Layout/PageHeader';
+import { Messages } from '../constants/messages';
 
 export default function Analytics() {
   const [summary, setSummary] = useState<{ totalAppointments?: number; totalBilled?: number } | null>(null);
@@ -24,8 +26,7 @@ export default function Analytics() {
 
   return (
     <div>
-      <h1 className="font-display text-2xl font-bold text-slate-900">Analytics</h1>
-      <p className="mt-1 text-slate-600">Reports and insights</p>
+      <PageHeader title={Messages.pageAnalytics} description={Messages.pageAnalyticsDesc} />
       <div className="mt-8 grid gap-6 sm:grid-cols-2">
         <div className="card">
           <h2 className="text-lg font-semibold text-slate-900">Appointments (last 30 days)</h2>
@@ -36,9 +37,9 @@ export default function Analytics() {
           )}
         </div>
         <div className="card">
-          <h2 className="text-lg font-semibold text-slate-900">Billing (last 30 days)</h2>
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Billing (last 30 days)</h2>
           {loading ? (
-            <div className="mt-2 h-8 w-8 animate-spin rounded-full border-2 border-primary-600 border-t-transparent" />
+            <div className="mt-2 h-8 w-8 animate-spin rounded-full border-2 border-primary-600 border-t-transparent dark:border-primary-400" />
           ) : (
             <p className="mt-2 text-2xl font-bold text-primary-600">
               ${(summary?.totalBilled ?? 0).toLocaleString()}

@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import api from '../api/client';
+import PageHeader from '../components/Layout/PageHeader';
+import { Messages } from '../constants/messages';
 
 interface AuditEntry {
   id: string;
@@ -28,20 +30,19 @@ export default function Audit() {
 
   return (
     <div>
-      <h1 className="font-display text-2xl font-bold text-slate-900">Audit log</h1>
-      <p className="mt-1 text-slate-600">Admin-only activity export</p>
+      <PageHeader title={Messages.pageAudit} description={Messages.pageAuditDesc} />
       <div className="card mt-8">
         {loading ? (
           <div className="flex justify-center py-12">
-            <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary-600 border-t-transparent" />
+            <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary-600 border-t-transparent dark:border-primary-400" />
           </div>
         ) : items.length === 0 ? (
-          <p className="py-12 text-center text-slate-500">No audit entries in range.</p>
+          <p className="py-12 text-center text-slate-500 dark:text-slate-400">{Messages.emptyAudit}</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead>
-                <tr className="border-b border-slate-200 text-slate-500">
+                <tr className="border-b border-slate-200 text-slate-500 dark:border-slate-600 dark:text-slate-400">
                   <th className="pb-3 font-medium">Time</th>
                   <th className="pb-3 font-medium">Entity</th>
                   <th className="pb-3 font-medium">Action</th>
@@ -50,11 +51,11 @@ export default function Audit() {
               </thead>
               <tbody>
                 {items.map((e) => (
-                  <tr key={e.id} className="border-b border-slate-100">
-                    <td className="py-3 text-slate-600">{new Date(e.timestamp).toLocaleString()}</td>
-                    <td className="py-3 font-medium text-slate-900">{e.entityType} / {e.entityId}</td>
-                    <td className="py-3">{e.action}</td>
-                    <td className="py-3 text-slate-600">{e.details ?? '—'}</td>
+                  <tr key={e.id} className="border-b border-slate-100 dark:border-slate-600 dark:hover:bg-slate-700/30">
+                    <td className="py-3 text-slate-600 dark:text-slate-300">{new Date(e.timestamp).toLocaleString()}</td>
+                    <td className="py-3 font-medium text-slate-900 dark:text-slate-100">{e.entityType} / {e.entityId}</td>
+                    <td className="py-3 text-slate-900 dark:text-slate-100">{e.action}</td>
+                    <td className="py-3 text-slate-600 dark:text-slate-300">{e.details ?? '—'}</td>
                   </tr>
                 ))}
               </tbody>

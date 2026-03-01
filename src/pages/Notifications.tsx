@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import api from '../api/client';
+import PageHeader from '../components/Layout/PageHeader';
+import { Messages } from '../constants/messages';
 
 interface Notif {
   id: string;
@@ -23,15 +25,14 @@ export default function Notifications() {
 
   return (
     <div>
-      <h1 className="font-display text-2xl font-bold text-slate-900">Notifications</h1>
-      <p className="mt-1 text-slate-600">Alerts and messages</p>
+      <PageHeader title={Messages.pageNotifications} description={Messages.pageNotificationsDesc} />
       <div className="card mt-8">
         {loading ? (
           <div className="flex justify-center py-12">
-            <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary-600 border-t-transparent" />
+            <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary-600 border-t-transparent dark:border-primary-400" />
           </div>
         ) : items.length === 0 ? (
-          <p className="py-12 text-center text-slate-500">No notifications.</p>
+          <p className="py-12 text-center text-slate-500 dark:text-slate-400">{Messages.emptyNotifications}</p>
         ) : (
           <ul className="divide-y divide-slate-100">
             {items.map((n) => (

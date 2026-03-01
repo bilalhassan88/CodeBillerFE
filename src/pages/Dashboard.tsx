@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { Users, Calendar, Receipt, TrendingUp } from 'lucide-react';
 import api from '../api/client';
 import type { PagedResult } from '../api/types';
+import PageHeader from '../components/Layout/PageHeader';
+import { Messages } from '../constants/messages';
 
 interface Stats {
   patients: number;
@@ -55,8 +57,7 @@ export default function Dashboard() {
 
   return (
     <div>
-      <h1 className="font-display text-2xl font-bold text-slate-900 dark:text-slate-100">Dashboard</h1>
-      <p className="mt-1 text-slate-600 dark:text-slate-400">Overview of your practice</p>
+      <PageHeader title={Messages.pageDashboard} description={Messages.pageDashboardDesc} />
       <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {cards.map(({ label, value, icon: Icon, color }) => (
           <div key={label} className="card flex items-center gap-4">
